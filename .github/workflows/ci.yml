@@ -46,8 +46,8 @@ jobs:
           name: backend-test-results
           path: |
             backend/coverage/
-            backend/test-results/
           retention-days: 7
+          if-no-files-found: ignore
 
   frontend-test:
     name: Frontend Tests
@@ -85,8 +85,8 @@ jobs:
           name: frontend-test-results
           path: |
             frontend/coverage/
-            frontend/test-results/
           retention-days: 7
+          if-no-files-found: ignore
 
   build:
     name: Build Check
@@ -101,7 +101,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
       
       - name: Build backend
         working-directory: ./backend
