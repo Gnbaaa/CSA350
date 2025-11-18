@@ -8,9 +8,11 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
+    "allowJs": true,
+    "checkJs": false,
     "types": ["vitest/globals", "vitest/importMeta", "@testing-library/jest-dom"]
   },
   "include": ["src"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["dist", "node_modules", "**/*.test.js"]
 }
 

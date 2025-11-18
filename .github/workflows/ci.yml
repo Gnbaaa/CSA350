@@ -106,13 +106,13 @@ jobs:
         working-directory: ./backend
         run: |
           npm ci
-          npm run build
+          npm run build || (echo "Backend build failed. Checking TypeScript errors..." && npx tsc --noEmit && exit 1)
       
       - name: Build frontend
         working-directory: ./frontend
         run: |
           npm ci
-          npm run build
+          npm run build || (echo "Frontend build failed. Checking TypeScript errors..." && npx tsc --noEmit && exit 1)
 
   notify-on-failure:
     name: Email Notification on Failure
