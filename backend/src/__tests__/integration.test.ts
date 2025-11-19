@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
 import request from 'supertest';
-import express, { Express } from 'express';
+import { Express } from 'express';
 import { createServerWithDatabase } from '../server-with-db';
 import { closeDatabase } from '../infra/database';
 import Database from 'better-sqlite3';

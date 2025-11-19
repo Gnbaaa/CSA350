@@ -1,4 +1,5 @@
-import { Router, Request } from 'express';
+import { Router } from 'express';
+import jwt from 'jsonwebtoken';
 import { UserRepository } from '../domain/user';
 import { LoginHistoryRepository } from '../infra/sqlite-user-repository';
 import { createAuthService } from '../services/auth-service';
@@ -104,7 +105,6 @@ export function createAuthRouterWithHistory(
     let userId: string;
 
     try {
-      const jwt = require('jsonwebtoken');
       const payload = jwt.verify(token, config.jwtSecret) as { sub: string };
       userId = payload.sub;
     } catch {
