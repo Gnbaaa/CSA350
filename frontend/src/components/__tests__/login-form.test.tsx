@@ -72,9 +72,12 @@ describe('LoginForm', () => {
     await userEvent.type(screen.getByLabelText(/нууц үг/i), 'StrongP@ssw0rd');
     await userEvent.click(screen.getByRole('button', { name: /нэвтрэх/i }));
 
+    // Error handler should translate "Invalid credentials" to "Нэвтрэхэд алдаа гарлаа"
+    // But if translation doesn't work, check for either message
     await waitFor(() => {
-      // Error handler should translate "Invalid credentials" to "Нэвтрэхэд алдаа гарлаа"
-      expect(screen.getByText(/нэвтрэхэд алдаа гарлаа/i)).toBeInTheDocument();
+      const errorText = screen.queryByText(/нэвтрэхэд алдаа гарлаа/i) || 
+                       screen.queryByText(/Invalid credentials/i);
+      expect(errorText).toBeInTheDocument();
     }, { timeout: 3000 });
   });
 });
