@@ -7,6 +7,12 @@ frontend/logs/
 backend/dist/
 frontend/dist/
 
+# Database files
+*.db
+*.db-journal
+backend/data/
+test-integration.db
+
 # Dependencies
 node_modules/
 backend/node_modules/
