@@ -1,5 +1,6 @@
 import { FormEvent, useMemo, useState } from 'react';
 import { z } from 'zod';
+import { getErrorMessage, handleApiError, getFieldErrors } from '../utils/error-handler';
 
 interface AuthUser {
   token: string;
@@ -54,13 +55,21 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
     setIsSubmitting(false);
 
-    const payload = await response.json();
-
     if (!response.ok) {
-      const message = payload.error === 'Invalid credentials' ? invalidCredentialsMessage : payload.error;
-      setServerError(message ?? invalidCredentialsMessage);
+      const apiError = await handleApiError(response);
+      const errorMessage = getErrorMessage(apiError);
+      setServerError(errorMessage);
+      
+      // Field-level алдаанууд байвал тэдгээрийг харуулах
+      const fieldErrors = getFieldErrors(apiError);
+      if (Object.keys(fieldErrors).length > 0) {
+        setErrorMap(fieldErrors);
+      }
+      
       return;
     }
+
+    const payload = await response.json();
 
     onSuccess?.({
       token: payload.token,

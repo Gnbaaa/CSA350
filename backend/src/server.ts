@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import { AuthRouterConfig, createAuthRouter } from './routes/auth-router';
 import { createAdminRouter } from './routes/admin-router';
 import { createInMemoryUserRepository } from './infra/in-memory-user-repository';
+import { errorHandler, notFoundHandler } from './middleware/error-handler';
 import bcrypt from 'bcryptjs';
 
 async function seedAdminAccount(config: Required<AuthRouterConfig>) {
@@ -55,6 +56,12 @@ export function createServer(authConfig?: Partial<AuthRouterConfig>) {
 
   app.use('/api/auth', createAuthRouter(sharedConfig));
   app.use('/api/admin', createAdminRouter(sharedConfig));
+
+  // 404 handler (бүх route-уудын дараа)
+  app.use(notFoundHandler);
+
+  // Error handler (бүх middleware-уудын дараа)
+  app.use(errorHandler);
 
   return app;
 }

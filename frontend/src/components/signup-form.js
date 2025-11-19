@@ -1,6 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useMemo, useState } from 'react';
 import { z } from 'zod';
+import { getErrorMessage, handleApiError, getFieldErrors } from '../utils/error-handler';
 const signupSchema = z.object({
     email: z.string().email({ message: 'Зөв имэйл хаяг оруулна уу.' }),
     fullName: z.string().min(2, { message: 'Нэр хамгийн багадаа 2 тэмдэгт байна.' }),
@@ -35,11 +36,18 @@ export function SignUpForm({ onSuccess }) {
             body: JSON.stringify({ email, fullName, password })
         });
         setIsSubmitting(false);
-        const payload = await response.json();
         if (!response.ok) {
-            setServerError(payload.error ?? 'Бүртгэл амжилтгүй боллоо.');
+            const apiError = await handleApiError(response);
+            const errorMessage = getErrorMessage(apiError);
+            setServerError(errorMessage);
+            // Field-level алдаанууд байвал тэдгээрийг харуулах
+            const fieldErrors = getFieldErrors(apiError);
+            if (Object.keys(fieldErrors).length > 0) {
+                setErrorMap(fieldErrors);
+            }
             return;
         }
+        const payload = await response.json();
         onSuccess?.({ email: payload.user.email, fullName: payload.user.fullName });
         setEmail('');
         setFullName('');
