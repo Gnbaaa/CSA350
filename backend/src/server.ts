@@ -7,7 +7,6 @@ import {
   createSqliteUserRepository,
   createSqliteLoginHistoryRepository
 } from './infra/sqlite-user-repository';
-import { createInMemoryUserRepository } from './infra/in-memory-user-repository';
 import { createAuthRouterWithHistory } from './routes/auth-router-with-history';
 import { createAuthRouter } from './routes/auth-router';
 import { createAdminRouter } from './routes/admin-router';
