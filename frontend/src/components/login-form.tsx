@@ -1,8 +1,15 @@
 import { FormEvent, useMemo, useState } from 'react';
 import { z } from 'zod';
 
+interface AuthUser {
+  token: string;
+  role: 'admin' | 'ngo' | 'citizen';
+  email: string;
+  fullName: string;
+}
+
 interface LoginFormProps {
-  onSuccess?: (payload: { token: string }) => void;
+  onSuccess?: (payload: AuthUser) => void;
 }
 
 const loginSchema = z.object({
@@ -55,7 +62,12 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
       return;
     }
 
-    onSuccess?.({ token: payload.token });
+    onSuccess?.({
+      token: payload.token,
+      role: payload.user.role,
+      email: payload.user.email,
+      fullName: payload.user.fullName
+    });
   }
 
   return (

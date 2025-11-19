@@ -150,5 +150,4 @@ jobs:
             Дэлгэрэнгүй мэдээллийг: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
             
             Commit message: ${{ github.event.head_commit.message }}
-          content_type: text/html
 
