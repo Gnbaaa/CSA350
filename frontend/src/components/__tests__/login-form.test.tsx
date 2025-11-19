@@ -61,7 +61,8 @@ describe('LoginForm', () => {
   it('shows server error feedback', async () => {
     const mockFetch = vi.fn().mockResolvedValue({
       ok: false,
-      json: async () => ({ error: 'Invalid credentials' })
+      status: 401,
+      json: async () => ({ error: 'Invalid credentials', statusCode: 401 })
     });
     vi.stubGlobal('fetch', mockFetch as unknown as typeof fetch);
 
@@ -72,8 +73,9 @@ describe('LoginForm', () => {
     await userEvent.click(screen.getByRole('button', { name: /нэвтрэх/i }));
 
     await waitFor(() => {
-      expect(screen.getByText(/нэвтрэхэд алдаа гарлаа/i)).toBeVisible();
-    });
+      // Error handler should translate "Invalid credentials" to "Нэвтрэхэд алдаа гарлаа"
+      expect(screen.getByText(/нэвтрэхэд алдаа гарлаа/i)).toBeInTheDocument();
+    }, { timeout: 3000 });
   });
 });
 

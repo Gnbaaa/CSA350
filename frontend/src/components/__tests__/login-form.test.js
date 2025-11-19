@@ -45,7 +45,8 @@ describe('LoginForm', () => {
     it('shows server error feedback', async () => {
         const mockFetch = vi.fn().mockResolvedValue({
             ok: false,
-            json: async () => ({ error: 'Invalid credentials' })
+            status: 401,
+            json: async () => ({ error: 'Invalid credentials', statusCode: 401 })
         });
         vi.stubGlobal('fetch', mockFetch);
         render(_jsx(LoginForm, { onSuccess: vi.fn() }));

@@ -9,7 +9,8 @@ export function errorHandler(
   error: Error | AppError,
   req: Request,
   res: Response,
-  next: NextFunction
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _next: NextFunction
 ) {
   // AppError бол алдааны мэдээллийг ашиглах
   if (error instanceof AppError) {

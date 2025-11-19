@@ -42,6 +42,7 @@ export function getErrorMessage(error: ApiError | Error | string): string {
     'Баталгаажуулалтын алдаа': 'Оруулсан мэдээлэл буруу байна',
     'Нэвтрэх эрхгүй': 'Нэвтрэх эрхгүй байна',
     'Имэйл эсвэл нууц үг буруу байна': 'Имэйл эсвэл нууц үг буруу байна',
+    'Invalid credentials': 'Нэвтрэхэд алдаа гарлаа',
     'Энэ имэйл хаяг аль хэдийн бүртгэлтэй байна': 'Энэ имэйл хаяг аль хэдийн бүртгэлтэй байна',
     'Дотоод серверийн алдаа': 'Серверийн алдаа гарлаа. Дараа дахин оролдоно уу',
     'API endpoint олдсонгүй': 'Хуудас олдсонгүй'
@@ -63,12 +64,17 @@ export async function handleApiError(response: Response): Promise<ApiError> {
   let errorData: ApiError;
 
   try {
-    errorData = await response.json();
+    const jsonData = await response.json();
+    errorData = {
+      error: jsonData.error || 'Алдаа гарлаа',
+      statusCode: jsonData.statusCode || response.status || 500,
+      details: jsonData.details
+    };
   } catch {
     // JSON parse хийж чадахгүй бол ерөнхий алдаа
     errorData = {
       error: 'Серверийн алдаа',
-      statusCode: response.status
+      statusCode: response.status || 500
     };
   }
 

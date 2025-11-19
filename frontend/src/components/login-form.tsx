@@ -18,8 +18,6 @@ const loginSchema = z.object({
   password: z.string().min(8, { message: 'Нууц үг хамгийн багадаа 8 тэмдэгт байна.' })
 });
 
-const invalidCredentialsMessage = 'Нэвтрэхэд алдаа гарлаа';
-
 export function LoginForm({ onSuccess }: LoginFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
